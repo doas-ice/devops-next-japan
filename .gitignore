@@ -43,3 +43,6 @@ next-env.d.ts
 # GitHub Actions
 !.github/
 !.github/workflows/
+
+# Local Code Backups 
+*.bak
