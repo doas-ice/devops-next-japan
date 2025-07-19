@@ -29,11 +29,19 @@ jobs:
         run: npm ci
 
       - name: Check for outdated dependencies
+        id: check-outdated
         run: |
           echo "📦 Checking for outdated dependencies..."
-          npm outdated || echo "✅ All dependencies are up to date"
+          if npm outdated > /dev/null 2>&1; then
+            echo "outdated=true" >> $GITHUB_OUTPUT
+            echo "🔄 Outdated dependencies found"
+          else
+            echo "outdated=false" >> $GITHUB_OUTPUT
+            echo "✅ All dependencies are up to date"
+          fi
 
       - name: Update dependencies (if needed)
+        if: steps.check-outdated.outputs.outdated == 'true'
         run: |
           echo "🔄 Updating dependencies..."
           npm update
@@ -50,33 +58,14 @@ jobs:
             exit 1
           fi
 
-      - name: Run ESLint
+      - name: Run ESLint and Check Results
         run: |
           echo "🔍 Running ESLint..."
-          npm run lint
-
-      - name: Check for linting errors
-        run: |
-          echo "🔍 Checking for linting errors..."
-          # Run lint and capture output
           LINT_OUTPUT=$(npm run lint 2>&1)
           echo "$LINT_OUTPUT"
           
-          # Check if there are any errors (not just warnings)
-          if echo "$LINT_OUTPUT" | grep -q "Error:"; then
-            echo "❌ Linting errors found. Pipeline will fail."
-            echo "Please fix the following errors:"
-            echo "$LINT_OUTPUT" | grep "Error:"
-            exit 1
-          else
-            echo "✅ No linting errors found. Only warnings detected."
-          fi
-
-      - name: Linting Summary
-        run: |
           echo "📊 Linting Summary:"
           echo "=================="
-          LINT_OUTPUT=$(npm run lint 2>&1)
           
           ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:" || echo "0")
           WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:" || echo "0")
@@ -86,6 +75,8 @@ jobs:
           
           if [ "$ERROR_COUNT" -gt 0 ]; then
             echo "❌ Pipeline failed due to $ERROR_COUNT error(s)"
+            echo "Please fix the following errors:"
+            echo "$LINT_OUTPUT" | grep "Error:"
             exit 1
           else
             echo "✅ Pipeline passed with $WARNING_COUNT warning(s)"
