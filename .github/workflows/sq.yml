@@ -1,14 +1,17 @@
 name: SonarQube Analysis
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Linting using ESLint"]
+    types:
+      - completed
     branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   sonarqube:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,8 +23,23 @@ jobs:
           node-version: 'lts/*'
           cache: 'npm'
 
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-${{ hashFiles('package.json') }}
+            ${{ runner.os }}-node-modules-
+
       - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
+
+      - name: Install dependencies (cached)
+        if: steps.cache-node-modules.outputs.cache-hit == 'true'
+        run: echo "✅ Using cached node_modules"
 
       - name: Run build
         run: npm run build
