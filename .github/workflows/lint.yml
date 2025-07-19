@@ -88,8 +88,8 @@ jobs:
           echo "=================="
           
           # Count errors and warnings (ESLint outputs "Error:" and "Warning:")
-          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:")
-          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:")
+          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:" || echo -n "0")
+          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:" || echo -n "0")
           
           echo "Errors: $ERROR_COUNT"
           echo "Warnings: $WARNING_COUNT"
