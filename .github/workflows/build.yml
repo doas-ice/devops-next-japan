@@ -1,9 +1,10 @@
 name: Build
 
-on:
-  push:
-    branches:
-      - main
+# DISABLED - Uncomment the following section to re-enable this workflow
+# on:
+#   push:
+#     branches:
+#       - main
 
 
 jobs:
