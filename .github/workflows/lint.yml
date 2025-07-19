@@ -73,20 +73,22 @@ jobs:
           echo "📊 Linting Summary:"
           echo "=================="
           
-          # Count errors and warnings
-          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "error" || echo "0")
-          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "warning" || echo "0")
+          # Count errors and warnings (ESLint outputs "Error:" and "Warning:")
+          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:" || echo "0")
+          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:" || echo "0")
           
           echo "Errors: $ERROR_COUNT"
           echo "Warnings: $WARNING_COUNT"
           
           # Show detailed error information
-          if [ "$ERROR_COUNT" -gt 0 ]; then
+          if [ "$ERROR_COUNT" -gt 0 ] || [ "$LINT_EXIT_CODE" -ne 0 ]; then
             echo "❌ Pipeline failed due to $ERROR_COUNT error(s)"
             echo ""
             echo "🔍 Detailed Error Information:"
             echo "=============================="
-            echo "$LINT_OUTPUT" | grep -A 2 -B 2 "error" || echo "$LINT_OUTPUT"
+            # Show all lines containing "Error:" with line numbers
+            echo "$LINT_OUTPUT" | grep -n "Error:" || echo "No specific error lines found, showing full output:"
+            echo "$LINT_OUTPUT"
             exit 1
           else
             echo "✅ Pipeline passed with $WARNING_COUNT warning(s)"
