@@ -30,8 +30,9 @@ jobs:
         id: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
           restore-keys: |
+            ${{ runner.os }}-node-modules-${{ hashFiles('package.json') }}
             ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
@@ -88,8 +89,12 @@ jobs:
           echo "=================="
           
           # Count errors and warnings (ESLint outputs "Error:" and "Warning:")
-          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:" || echo -n "0")
-          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:" || echo -n "0")
+          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:" || echo "0")
+          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:" || echo "0")
+          
+          # Remove any newlines and ensure they're integers
+          ERROR_COUNT=$(echo "$ERROR_COUNT" | tr -d '\n')
+          WARNING_COUNT=$(echo "$WARNING_COUNT" | tr -d '\n')
           
           echo "Errors: $ERROR_COUNT"
           echo "Warnings: $WARNING_COUNT"
