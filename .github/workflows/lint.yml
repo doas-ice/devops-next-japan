@@ -1,0 +1,92 @@
+name: Linting using ESLint
+
+on:
+  push:
+    branches: [main, staging, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: 'lts/*'
+
+jobs:
+  eslint-linter-job:
+    name: Linting using ESLint
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for outdated dependencies
+        run: |
+          echo "📦 Checking for outdated dependencies..."
+          npm outdated || echo "✅ All dependencies are up to date"
+
+      - name: Update dependencies (if needed)
+        run: |
+          echo "🔄 Updating dependencies..."
+          npm update
+          echo "✅ Dependencies updated"
+
+      - name: Verify ESLint configuration
+        run: |
+          echo "🔍 Verifying ESLint configuration..."
+          if [ -f "eslint.config.mjs" ]; then
+            echo "✅ ESLint configuration file found"
+            cat eslint.config.mjs
+          else
+            echo "❌ ESLint configuration file not found"
+            exit 1
+          fi
+
+      - name: Run ESLint
+        run: |
+          echo "🔍 Running ESLint..."
+          npm run lint
+
+      - name: Check for linting errors
+        run: |
+          echo "🔍 Checking for linting errors..."
+          # Run lint and capture output
+          LINT_OUTPUT=$(npm run lint 2>&1)
+          echo "$LINT_OUTPUT"
+          
+          # Check if there are any errors (not just warnings)
+          if echo "$LINT_OUTPUT" | grep -q "Error:"; then
+            echo "❌ Linting errors found. Pipeline will fail."
+            echo "Please fix the following errors:"
+            echo "$LINT_OUTPUT" | grep "Error:"
+            exit 1
+          else
+            echo "✅ No linting errors found. Only warnings detected."
+          fi
+
+      - name: Linting Summary
+        run: |
+          echo "📊 Linting Summary:"
+          echo "=================="
+          LINT_OUTPUT=$(npm run lint 2>&1)
+          
+          ERROR_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Error:" || echo "0")
+          WARNING_COUNT=$(echo "$LINT_OUTPUT" | grep -c "Warning:" || echo "0")
+          
+          echo "Errors: $ERROR_COUNT"
+          echo "Warnings: $WARNING_COUNT"
+          
+          if [ "$ERROR_COUNT" -gt 0 ]; then
+            echo "❌ Pipeline failed due to $ERROR_COUNT error(s)"
+            exit 1
+          else
+            echo "✅ Pipeline passed with $WARNING_COUNT warning(s)"
+          fi
