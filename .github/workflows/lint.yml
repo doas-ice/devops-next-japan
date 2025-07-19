@@ -80,6 +80,23 @@ jobs:
           echo "Errors: $ERROR_COUNT"
           echo "Warnings: $WARNING_COUNT"
           
+          # Generate GitHub Job Summary
+          {
+            echo "## 📊 ESLint Pipeline Summary"
+            echo ""
+            echo "| Check | Status | Count |"
+            echo "|-------|--------|-------|"
+            if [ "$ERROR_COUNT" -gt 0 ] || [ "$LINT_EXIT_CODE" -ne 0 ]; then
+              echo "| Errors | ❌ | $ERROR_COUNT |"
+              echo "| Warnings | ⚠️ | $WARNING_COUNT |"
+              echo "| Pipeline | ❌ FAILED | - |"
+            else
+              echo "| Errors | ✅ | $ERROR_COUNT |"
+              echo "| Warnings | ⚠️ | $WARNING_COUNT |"
+              echo "| Pipeline | ✅ PASSED | - |"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+          
           # Show detailed error information
           if [ "$ERROR_COUNT" -gt 0 ] || [ "$LINT_EXIT_CODE" -ne 0 ]; then
             echo "❌ Pipeline failed due to $ERROR_COUNT error(s)"
@@ -87,3 +104,4 @@ jobs:
           else
             echo "✅ Pipeline passed with $WARNING_COUNT warning(s)"
           fi
+
