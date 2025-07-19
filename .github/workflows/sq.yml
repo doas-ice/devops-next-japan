@@ -26,7 +26,7 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Generate coverage
+      - name: Generate coverage report
         run: |
           npm install --save-dev jest
           npx jest --coverage --passWithNoTests
@@ -36,6 +36,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=devops-next-japan-sq
+            -Dsonar.projectName=devops-next-japan
+            -Dsonar.sources=src
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
 
       - name: Quality Gate Check
         uses: SonarSource/sonarqube-quality-gate-action@v1
