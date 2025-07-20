@@ -4,13 +4,13 @@
 
 ```bash
 # Show usage help (default)
-curl -fsSL https://raw.githubusercontent.com/aureri/devops-next-japan/main/.aws/scripts/setup-ec2.sh | bash
+curl -fsSL https://raw.githubusercontent.com/doas-ice/devops-next-japan/main/.aws/scripts/setup-ec2.sh | bash
 
 # Start SonarQube only
-curl -fsSL https://raw.githubusercontent.com/aureri/devops-next-japan/main/.aws/scripts/setup-ec2.sh | bash -s sonar
+curl -fsSL https://raw.githubusercontent.com/doas-ice/devops-next-japan/main/.aws/scripts/setup-ec2.sh | bash -s sonar
 
 # Start monitoring only
-curl -fsSL https://raw.githubusercontent.com/aureri/devops-next-japan/main/.aws/scripts/setup-ec2.sh | bash -s monitoring
+curl -fsSL https://raw.githubusercontent.com/doas-ice/devops-next-japan/main/.aws/scripts/setup-ec2.sh | bash -s monitoring
 ```
 
 ## What it does:

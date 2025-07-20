@@ -2,7 +2,7 @@
 
 set -e
 
-REPO_URL="https://github.com/aureri/devops-next-japan.git"
+REPO_URL="https://github.com/doas-ice/devops-next-japan.git"
 REPO_DIR="$HOME/devops-next-japan"
 
 # Function to check if command exists
