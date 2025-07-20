@@ -11,7 +11,7 @@ import {
     PieChart,
     Wallet
 } from 'lucide-react';
-import { assetUrl } from '../../../../lib/assetUrl';
+
 const DashboardContent = () => {
   return (
     <div className="main-panel">
