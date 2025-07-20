@@ -64,12 +64,6 @@ else
     echo "Docker already installed"
 fi
 
-# Add user to docker group for non-root access
-sudo usermod -aG docker $USER
-newgrp docker
-echo "Docker and Docker Compose installation complete!"
-echo "Note: You may need to log out and back in for group changes to take effect."
-
 # Function to setup repository
 setup_repo() {
     if [ ! -d "$REPO_DIR" ]; then
