@@ -191,7 +191,11 @@ function ProfileDropdown() {
   return (
     <div className="relative group">
       <div className="flex items-center gap-2 cursor-pointer">
+<<<<<<< Updated upstream
         <Image
+=======
+        <img
+>>>>>>> Stashed changes
           src={assetUrl('images/faces/face15.jpg')}
           alt="Profile"
           width={32}
