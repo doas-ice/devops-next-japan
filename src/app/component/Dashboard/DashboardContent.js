@@ -11,6 +11,7 @@ import {
     PieChart,
     Wallet
 } from 'lucide-react';
+import { assetUrl } from '../../../lib/assetUrl';
 const DashboardContent = () => {
   return (
     <div className="main-panel">
@@ -592,7 +593,7 @@ const DashboardContent = () => {
               {/* <div className="relative overflow-hidden rounded-lg">
                 <div className="item w-full">
                   <Image
-                    src="/assets/images/dashboard/Rectangle.jpg"
+                    src={assetUrl('images/dashboard/Rectangle.jpg')}
                     alt="Portfolio Image 1"
                     width={600} // Adjust based on your design needs
                     height={400} // Adjust based on your design needs

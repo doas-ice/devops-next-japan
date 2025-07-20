@@ -32,4 +32,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ env.DOCKER_IMAGE }}:latest
-            ${{ env.DOCKER_IMAGE }}:${{ github.sha }} 
+            ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_ASSETS_BASE_URL=https://devops-next-japan-assets.s3.ap-southeast-1.amazonaws.com/assets
+        env:
+          NEXT_PUBLIC_ASSETS_BASE_URL: https://devops-next-japan-assets.s3.ap-southeast-1.amazonaws.com/assets 

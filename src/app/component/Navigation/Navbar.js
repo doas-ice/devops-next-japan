@@ -19,6 +19,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { assetUrl } from '../../../lib/assetUrl';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -191,7 +192,7 @@ function ProfileDropdown() {
     <div className="relative group">
       <div className="flex items-center gap-2 cursor-pointer">
         <Image
-          src="/assets/images/faces/face15.jpg"
+          src={assetUrl('images/faces/face15.jpg')}
           alt="Profile"
           width={32}
           height={32}
@@ -239,7 +240,7 @@ function DropdownWrapper({ icon, badgeColor, title, items }) {
           >
             {item.img ? (
               <Image
-                src={item.img}
+                src={assetUrl(item.img.replace(/^\/assets\//, '').replace(/^assets\//, ''))}
                 alt={item.label}
                 width={40}
                 height={40}
