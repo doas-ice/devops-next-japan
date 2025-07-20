@@ -33,18 +33,6 @@ install_docker() {
     sudo usermod -aG docker $USER
 }
 
-# Function to setup repository
-setup_repo() {
-    if [ ! -d "$REPO_DIR" ]; then
-        echo "Cloning repository..."
-        git clone "$REPO_URL" "$REPO_DIR"
-    else
-        echo "Repository exists, pulling latest changes..."
-        cd "$REPO_DIR"
-        git pull origin main
-    fi
-}
-
 # Function to start SonarQube
 start_sonarqube() {
     echo "Starting SonarQube..."
@@ -81,6 +69,18 @@ sudo usermod -aG docker $USER
 newgrp docker
 echo "Docker and Docker Compose installation complete!"
 echo "Note: You may need to log out and back in for group changes to take effect."
+
+# Function to setup repository
+setup_repo() {
+    if [ ! -d "$REPO_DIR" ]; then
+        echo "Cloning repository..."
+        git clone "$REPO_URL" "$REPO_DIR"
+    else
+        echo "Repository exists, pulling latest changes..."
+        cd "$REPO_DIR"
+        git pull origin main
+    fi
+}
 
 # Setup repository
 setup_repo
