@@ -191,11 +191,7 @@ function ProfileDropdown() {
   return (
     <div className="relative group">
       <div className="flex items-center gap-2 cursor-pointer">
-<<<<<<< Updated upstream
-        <Image
-=======
         <img
->>>>>>> Stashed changes
           src={assetUrl('images/faces/face15.jpg')}
           alt="Profile"
           width={32}
@@ -243,7 +239,7 @@ function DropdownWrapper({ icon, badgeColor, title, items }) {
             className="flex items-start gap-3 px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer"
           >
             {item.img ? (
-              <Image
+              <img
                 src={assetUrl(item.img.replace(/^\/assets\//, '').replace(/^assets\//, ''))}
                 alt={item.label}
                 width={40}

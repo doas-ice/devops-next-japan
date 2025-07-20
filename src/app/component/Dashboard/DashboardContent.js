@@ -11,11 +11,7 @@ import {
     PieChart,
     Wallet
 } from 'lucide-react';
-<<<<<<< Updated upstream
-
-=======
 import { assetUrl } from '../../../../lib/assetUrl';
->>>>>>> Stashed changes
 const DashboardContent = () => {
   return (
     <div className="main-panel">
