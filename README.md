@@ -95,7 +95,7 @@ export default [
 ```
 
 **Screenshots**  
-
+---
 <img src="https://github.com/user-attachments/assets/46fa1139-7ee4-43b5-b0b3-2664e4262f9f" />
 <p align="center"><em><b>Linting CI Summary</b></em></p>
 
@@ -155,7 +155,7 @@ sonar.javascript.lcov.reportPaths=coverage/lcov.info
 - **Maintainability Rating:** Overall code maintainability score
 
 **Screenshots**
-
+---
 <img src="https://github.com/user-attachments/assets/5410478c-7a23-47d6-860c-70cea9406e5f" />
 
 <p align="center"><em><b>Quality Gate Passed</b></em></p>
@@ -231,7 +231,7 @@ CMD ["node", "server.js"]
 - Integrated with GitHub Actions workflow chain
 
 **Screenshots**
-
+---
 <img src="https://github.com/user-attachments/assets/79867a5d-5a57-4fc8-8cef-e40e0074d1e8" />
 <p align="center"><em><b>Dockerize & Push GH Action</b></em></p>
 
@@ -247,10 +247,10 @@ CMD ["node", "server.js"]
 ### EC2 Provisioning
 
 **Instance Configuration:**
-- **OS:** Ubuntu 22.04 LTS
-- **Type:** t3.medium (2 vCPU, 4GB RAM)
-- **Storage:** 20GB GP3 SSD
-- **Security Groups:** Ports 22 (SSH), 80 (HTTP), 3000 (App), 9000 (SonarQube)
+- **OS:** Ubuntu 24.04 LTS
+- **Type:** t2.medium (2 vCPU, 4GB RAM)
+- **Storage:** 25GB GP3 SSD
+- **Security Groups:** Ports 22 (SSH), 80 (HTTP), 3030 (App), 9000 (SonarQube), 3000 (Grafana)
 
 ### Infrastructure Setup
 
@@ -293,7 +293,7 @@ start_monitoring() {
 - **Health Checks:** Built-in container health monitoring
 
 **Screenshots**
-
+---
 <img src="https://github.com/user-attachments/assets/85e80545-c88d-4db9-8179-ae4a7abbc87a" />
 
 <p align="center"><em><b>EC2 Instance Summary</b></em></p>
@@ -353,7 +353,7 @@ const nextConfig = {
 ```
 
 **Screenshots**
-
+---
 <img src="https://github.com/user-attachments/assets/f4774be8-b3ac-4e9e-a677-e6ca960d3938" />
 
 <p align="center"><em><b>S3 Storage Bucket</b></em></p>
@@ -438,6 +438,7 @@ services:
 ```
 
 **Screenshots**
+---
 <img src="https://github.com/user-attachments/assets/533fc8d9-480b-4415-81a2-dbe4d837c34b" />
 
 <p align="center"><em><b>Grafana Dashboard</b></em></p>
