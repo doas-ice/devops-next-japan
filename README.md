@@ -76,6 +76,24 @@ graph TB
 - Optimized node_modules caching
 - Comprehensive error reporting with GitHub Job Summary
 
+**ESLint Configuration Example:**
+```javascript
+// eslint.config.mjs
+export default [
+  {
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+    },
+    rules: {
+      'no-unused-vars': 'error',
+      'no-console': 'warn',
+    },
+  },
+];
+```
+
 **Screenshots**  
 
 <img src="https://github.com/user-attachments/assets/46fa1139-7ee4-43b5-b0b3-2664e4262f9f" />
@@ -111,6 +129,14 @@ graph TB
 - **Sources:** `src/` directory
 - **Coverage:** Jest-generated lcov.info
 - **Language:** JavaScript/TypeScript
+
+**SonarQube Project Properties:**
+```properties
+# .sonar-project.properties
+sonar.projectKey=devops-next-japan-sq
+sonar.sources=src
+sonar.javascript.lcov.reportPaths=coverage/lcov.info
+```
 
 ### GitHub Actions Integration
 
@@ -172,6 +198,26 @@ graph TB
 - **Security:** Alpine Linux base, non-root execution, minimal attack surface
 - **Optimization:** Standalone Next.js output, layer caching, dependency optimization
 
+**Dockerfile Key Sections:**
+```dockerfile
+# Builder stage
+FROM node:lts-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# Runner stage
+FROM node:lts-alpine AS runner
+RUN adduser --system --uid 1001 nextjs
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/public ./public
+USER nextjs
+EXPOSE 3030
+CMD ["node", "server.js"]
+```
+
 ### Docker Hub Publishing
 
 **Image Strategy:**
@@ -218,6 +264,26 @@ graph TB
 - `./setup-ec2.sh sonar` - Setup SonarQube server
 - `./setup-ec2.sh monitoring` - Setup monitoring stack
 
+**EC2 Setup Script Key Functions:**
+```bash
+#!/bin/bash
+# .aws/scripts/setup-ec2.sh
+
+install_docker() {
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io
+    sudo systemctl enable --now docker
+    sudo usermod -aG docker $USER
+}
+
+start_monitoring() {
+    cd "$REPO_DIR/.aws/monitoring"
+    docker compose up -d
+    echo "Prometheus: http://$(curl -s ifconfig.me):9090"
+    echo "Grafana: http://$(curl -s ifconfig.me):3000"
+}
+```
+
 ### Container Deployment
 
 **Deployment Strategy:**
@@ -262,6 +328,29 @@ graph TB
 - Updated application to load profile images from S3 bucket
 - Configured Next.js image optimization for S3 domains
 - Environment-based asset URL configuration
+
+**Asset URL Configuration:**
+```javascript
+// lib/assetUrl.js
+const ASSETS_BASE_URL = process.env.NEXT_PUBLIC_ASSETS_BASE_URL || '/assets';
+
+export function assetUrl(path) {
+  if (path.startsWith('/')) path = path.slice(1);
+  return `${ASSETS_BASE_URL}/${path}`;
+}
+```
+
+**Next.js Configuration:**
+```javascript
+// next.config.mjs
+const nextConfig = {
+  images: {
+    domains: ['devops-next-japan-assets.s3.ap-southeast-1.amazonaws.com'],
+    unoptimized: true,
+  },
+  output: 'standalone',
+};
+```
 
 **Screenshots**
 
@@ -321,6 +410,33 @@ graph LR
   - Disk I/O performance
   - Network traffic
 
+**Monitoring Stack Configuration:**
+```yaml
+# .aws/monitoring/docker-compose.yml
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--storage.tsdb.retention.time=200h'
+
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+```
+
 **Screenshots**
 <img src="https://github.com/user-attachments/assets/533fc8d9-480b-4415-81a2-dbe4d837c34b" />
 
@@ -351,6 +467,22 @@ graph LR
 - Configured proper S3 bucket policies for public read access
 - Updated Next.js image optimization settings
 - Implemented proper asset URL resolution
+
+**S3 Bucket Policy Example:**
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::devops-next-japan-assets/*"
+        }
+    ]
+}
+```
 
 **Commit Reference:** `88d6565 Source Code & CI changes to load assets from S3 bucket`
 
@@ -430,3 +562,8 @@ graph LR
 **Environment Configuration:** Proper environment variable management ensures flexibility across different deployment environments.
 
 **Cost Optimization:** Understanding cloud service pricing models helps optimize infrastructure costs.
+
+---
+
+**Repository:** [https://github.com/doas-ice/devops-next-japan](https://github.com/doas-ice/devops-next-japan)  
+**Docker Hub:** [aureri/devops-next-japan](https://hub.docker.com/r/aureri/devops-next-japan)  
