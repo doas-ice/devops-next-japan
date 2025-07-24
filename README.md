@@ -155,7 +155,9 @@ sonar.javascript.lcov.reportPaths=coverage/lcov.info
 - **Maintainability Rating:** Overall code maintainability score
 
 **Screenshots**
+
 ---
+
 <img src="https://github.com/user-attachments/assets/5410478c-7a23-47d6-860c-70cea9406e5f" />
 
 <p align="center"><em><b>Quality Gate Passed</b></em></p>
@@ -187,6 +189,7 @@ sonar.javascript.lcov.reportPaths=coverage/lcov.info
 <img src="https://github.com/user-attachments/assets/3e34f944-98d9-4a70-a66c-32fe34df5c38" />
 <p align="center"><em><b>SonarQube Quality Gate Failure resulting in CI Pipeline being Failed</b></em></p>
 
+---
 
 ## Part 3: Dockerize & Push
 
@@ -231,7 +234,9 @@ CMD ["node", "server.js"]
 - Integrated with GitHub Actions workflow chain
 
 **Screenshots**
+
 ---
+
 <img src="https://github.com/user-attachments/assets/79867a5d-5a57-4fc8-8cef-e40e0074d1e8" />
 <p align="center"><em><b>Dockerize & Push GH Action</b></em></p>
 
@@ -253,6 +258,22 @@ CMD ["node", "server.js"]
 - **Security Groups:** Ports 22 (SSH), 80 (HTTP), 3030 (App), 9000 (SonarQube), 3000 (Grafana)
 
 ### Infrastructure Setup
+
+**Github Action Workflow**
+- **SSH into EC2 instance**
+- **Automatically Check for and Install Docker and Docker Compose**
+- **Deploy the Next Japan App with monitoring stack on EC2**
+- **Listed Next Japan, Prometheus and Grafana access on workflow output**
+
+
+**Screenshots**
+
+---
+
+<img src="https://github.com/user-attachments/assets/63d44727-a074-4f53-a725-50dbcddc72a7" />
+<p align="center"><em><b>Workflow to automatically deploy on EC2</b></em></p>
+
+---
 
 **Automated Setup Script:**
 - **Docker Installation:** Automated Docker CE setup
@@ -293,18 +314,25 @@ start_monitoring() {
 - **Health Checks:** Built-in container health monitoring
 
 **Screenshots**
+
 ---
+
 <img src="https://github.com/user-attachments/assets/85e80545-c88d-4db9-8179-ae4a7abbc87a" />
 
 <p align="center"><em><b>EC2 Instance Summary</b></em></p>
+
 ---
+
 <img src="https://github.com/user-attachments/assets/10abcfee-4e8e-40ce-be48-62456774e862" />
 
 <p align="center"><em><b>EC2 Security Group with allowed Ports</b></em></p>
+
 ---
+
 <img src="https://github.com/user-attachments/assets/45d8a74e-5440-4a83-a21f-6e77cd1f742b" />
 
 <p align="center"><em><b>NGINX Proxy for Next Japan Docker App serving on HTTP</b></em></p>
+
 ---
 
 ## Part 5: S3 Static Assets
@@ -353,20 +381,25 @@ const nextConfig = {
 ```
 
 **Screenshots**
+
 ---
+
 <img src="https://github.com/user-attachments/assets/f4774be8-b3ac-4e9e-a677-e6ca960d3938" />
 
 <p align="center"><em><b>S3 Storage Bucket</b></em></p>
+
 ---
 
 <img src="https://github.com/user-attachments/assets/f1054386-d159-44fd-b58b-287c74f10a6f" />
 
 <p align="center"><em><b>Assets in S3 Storage Bucket</b></em></p>
+
 ---
 
 <img src="https://github.com/user-attachments/assets/7467eaa2-38a4-4281-920f-516699cead45" />
 
 <p align="center"><em><b>Deployed Application fetching data from S3 Storage Bucket</b></em></p>
+
 ---
 
 ## Part 6: Monitoring
@@ -438,10 +471,13 @@ services:
 ```
 
 **Screenshots**
+
 ---
+
 <img src="https://github.com/user-attachments/assets/533fc8d9-480b-4415-81a2-dbe4d837c34b" />
 
 <p align="center"><em><b>Grafana Dashboard</b></em></p>
+
 ---
 
 ---
