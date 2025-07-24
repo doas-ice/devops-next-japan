@@ -21,7 +21,10 @@ jobs:
           SSH_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
           REPO: ${{ github.repository }}
         run: |
-          echo "$SSH_KEY" | ssh -i /dev/stdin -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'bash -s' <<'EOF'
+          echo "$SSH_KEY" > ec2-aws.pem
+          chmod 600 ec2-aws.pem
+
+          ssh -i ec2-aws.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'bash -s' <<'EOF'
             set -e
 
             echo "🔄 Updating Ubuntu..."
